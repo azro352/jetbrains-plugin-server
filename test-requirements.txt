@@ -1,0 +1,4 @@
+pytest
+pytest-md
+pytest-emoji
+-r requirements.txt
