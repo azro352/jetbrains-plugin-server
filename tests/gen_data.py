@@ -14,7 +14,7 @@ PLUGINS: list[str] = [
 ]
 
 if __name__ == '__main__':
-    output = Path(__file__).parent.joinpath("data", "plugins_test_2.json")
+    output = Path(__file__).parent.joinpath("data", "plugins_test.json")
 
     result: CatalogSchema = CatalogSchema()
 
