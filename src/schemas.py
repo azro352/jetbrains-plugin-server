@@ -47,7 +47,8 @@ class PluginVersionSpecSchema(BaseModel):
 
 
 class PluginVersionSchema(BaseModel):
-    id: str
+    plugin_id: str
+    plugin_version_id: int
     version: str
     specs: PluginVersionSpecSchema
 

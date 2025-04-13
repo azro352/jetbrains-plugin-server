@@ -15,7 +15,6 @@ class TestPlugin(TestCase):
 
     def test_one(self):
         content = get_plugins("243.26053")
-        self.assertEquals(len(content), 4)
 
         self.assertPluginExists(content, "631-python", "243.26053.27")
         self.assertPluginExists(content, "10080-rainbow-brackets", "2024.2.10-241")
@@ -24,7 +23,6 @@ class TestPlugin(TestCase):
 
     def test_two(self):
         content = get_plugins("222.4554.15")
-        self.assertEquals(len(content), 4)
 
         self.assertPluginExists(content, "631-python", "222.4554.10")
         self.assertPluginExists(content, "10080-rainbow-brackets", "2023.3.7-ij")

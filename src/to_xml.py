@@ -9,9 +9,9 @@ def to_xml(plugins: list[tuple[str, PluginVersionSchema]]):
     a = ET.Element('plugins')
     for name, plugin in plugins:
         p = ET.SubElement(a, 'plugin', {
-            "id": plugin.id,
+            "id": plugin.plugin_id,
             # url of download
-            "url": DL_URL_BASE.format(id=plugin.id, version=plugin.version),
+            "url": DL_URL_BASE.format(plugin_version_id=plugin.plugin_version_id),
             "version": plugin.version
         })
         attrs = {"since-build": plugin.specs.since_build, }
