@@ -1,3 +1,4 @@
+parameterized
 pytest
 pytest-md
 pytest-emoji
