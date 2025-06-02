@@ -19,6 +19,9 @@ def to_xml(plugins: list[tuple[str, PluginVersionSchema]]):
             attrs["until-build"] = ub
         iv = ET.SubElement(p, 'idea-version', attrs)
 
+        ET.SubElement(p, 'description').text = "todo"
+        ET.SubElement(p, 'change-notes').text = "todo"
+
     bio = BytesIO()
     ET.ElementTree(a).write(bio)
     bio.seek(0)
