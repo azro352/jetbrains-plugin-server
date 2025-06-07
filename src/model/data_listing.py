@@ -27,24 +27,24 @@ class FSDataListing(DataListing):
         ]
 
     def get(self, directory, file) -> Any:
-        return self.base_path.joinpath(directory, file).read_text()
+        return self.base_path.joinpath(directory, file).read_text(encoding="utf8")
 
 
 class ArtifactoryDataListing(DataListing):
 
     def __init__(self, base_url: str, repo_name: str):
-        self.base_url = base_url
-        self.repo_name = repo_name
+        self.base_url = base_url.strip("/")
+        self.repo_name = repo_name.strip("/")
 
     def list(self, directory) -> list[str]:
-        files = requests.get(
-            f"{self.base_url}/artifactory/api/storage/{self.repo_name}/{directory}",
-            params={"list": "yep"}
-        ).json()
+        url = f"{self.base_url}/artifactory/api/storage/{self.repo_name}/{directory}"
+        files_rep = requests.get(url)
+        files = files_rep.json()
         return [
             Path(file["uri"]).name
-            for file in files
+            for file in files["children"]
         ]
 
     def get(self, directory, file) -> Any:
-        raise NotImplementedError()
+        url = f"{self.base_url}/artifactory/{self.repo_name}/{directory}/{file}"
+        return requests.get(url).text
