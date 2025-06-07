@@ -1,10 +1,12 @@
+from pydantic_extra_types.semantic_version import SemanticVersion
+
 from src.plugin_catalog import get_plugin_catalog
 from src.schemas import PluginVersionSchema, LowPaddingSemanticVersion
 
 
 def get_plugins(build: str) -> list[tuple[str, PluginVersionSchema]]:
     catalog = get_plugin_catalog()
-    build_version = LowPaddingSemanticVersion.validate_from_str(build)
+    build_version = LowPaddingSemanticVersion.parse(build)
     return [
         (plugin.name, version_found)
         for plugin in catalog.plugins
@@ -13,7 +15,7 @@ def get_plugins(build: str) -> list[tuple[str, PluginVersionSchema]]:
 
 
 def get_latest_compatible(
-        build_version: LowPaddingSemanticVersion,
+        build_version: SemanticVersion,
         plugin_versions: list[PluginVersionSchema]
 ):
     for plugin_version in plugin_versions:
@@ -24,7 +26,7 @@ def get_latest_compatible(
 
 
 def is_compatible(
-        build_version: LowPaddingSemanticVersion,
+        build_version: SemanticVersion,
         plugin_version: PluginVersionSchema
 ) -> bool:
     since, until = plugin_version.specs.since_build_semver, plugin_version.specs.until_build_semver

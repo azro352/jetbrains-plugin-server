@@ -1,15 +1,18 @@
 import json
-from pathlib import Path
+import logging
+from functools import lru_cache
 
-from src.config import PLUGIN_TEST_DATA
+from src.config import PLUGIN_TEST_DATA, IS_TEST_MODE, PLUGIN_PROD_DATA
 from src.schemas import CatalogSchema
 
-import os
+LOG = logging.getLogger(__name__)
 
-if os.getenv("TEST_MODE") == "true":
-    def get_plugin_catalog():
-        return CatalogSchema.model_validate(json.loads(PLUGIN_TEST_DATA.read_text()))
-else:
 
-    def get_plugin_catalog() -> CatalogSchema:
-        return CatalogSchema.model_validate(json.loads(PLUGIN_TEST_DATA.read_text()))
+@lru_cache()
+def get_plugin_catalog() -> CatalogSchema:
+    LOG.info("load catalog from file")
+    if IS_TEST_MODE:
+        catalog_path = PLUGIN_TEST_DATA
+    else:
+        catalog_path = PLUGIN_PROD_DATA
+    return CatalogSchema.model_validate(json.loads(catalog_path.read_text()))

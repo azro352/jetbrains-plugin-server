@@ -1,3 +1,4 @@
+import re
 from typing import Literal, Type, Any
 
 from pydantic import BaseModel, Field, model_validator
@@ -6,24 +7,22 @@ from semver._types import String
 from semver.version import T
 
 
-class LowPaddingSemanticVersion(SemanticVersion):
-    @classmethod
-    def parse(
-            cls: Type[T], version: String, optional_minor_and_patch: bool = False
-    ) -> T:
-        return normalize_version(version, "start")
+class LowPaddingSemanticVersion:
+    @staticmethod
+    def parse(version: str) -> SemanticVersion:
+        return SemanticVersion.parse(normalize_version(version, "start"))
 
 
-class HighPaddingSemanticVersion(SemanticVersion):
-    @classmethod
-    def parse(
-            cls: Type[T], version: String, optional_minor_and_patch: bool = False
-    ) -> T:
-        return normalize_version(version, "end")
+class HighPaddingSemanticVersion:
+    @staticmethod
+    def parse(version: str) -> SemanticVersion:
+        return SemanticVersion.parse(normalize_version(version, "end"))
 
 
 def normalize_version(value: str, mode: Literal["start", "end"]):
-    replacer = "0" if mode == "start" else "9999"
+    if match := re.match(r"^[A-Z]+-(.+)$", value):
+        value = match.group(1)
+    replacer = "0" if mode == "start" else "999999"
     result = value.replace(".*", f".{replacer}")
     while result.count(".") < 2:
         result += f".{replacer}"
@@ -34,8 +33,8 @@ class PluginVersionSpecSchema(BaseModel):
     since_build: str = Field(alias="since-build")
     until_build: str | None = Field(alias="until-build", default=None)
 
-    since_build_semver: LowPaddingSemanticVersion = Field(alias="since-build-semver")
-    until_build_semver: HighPaddingSemanticVersion | None = Field(alias="until-build-semver", default=None)
+    since_build_semver: SemanticVersion = Field(alias="since-build-semver")
+    until_build_semver: SemanticVersion | None = Field(alias="until-build-semver", default=None)
 
     @model_validator(mode='before')
     @classmethod
@@ -49,6 +48,8 @@ class PluginVersionSpecSchema(BaseModel):
 class PluginVersionSchema(BaseModel):
     plugin_id: str
     plugin_version_id: int
+    description: str | None
+    change_notes: str | None
     version: str
     specs: PluginVersionSpecSchema
 

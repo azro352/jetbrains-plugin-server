@@ -14,13 +14,14 @@ def to_xml(plugins: list[tuple[str, PluginVersionSchema]]):
             "url": DL_URL_BASE.format(plugin_version_id=plugin.plugin_version_id),
             "version": plugin.version
         })
-        attrs = {"since-build": plugin.specs.since_build, }
+        attrs = {"since-build": plugin.specs.since_build}
         if ub := plugin.specs.until_build:
             attrs["until-build"] = ub
         iv = ET.SubElement(p, 'idea-version', attrs)
 
-        ET.SubElement(p, 'description').text = "todo"
-        ET.SubElement(p, 'change-notes').text = "todo"
+        ET.SubElement(p, 'name').text = name
+        ET.SubElement(p, 'description').text = plugin.description
+        ET.SubElement(p, 'change-notes').text = plugin.change_notes
 
     bio = BytesIO()
     ET.ElementTree(a).write(bio)

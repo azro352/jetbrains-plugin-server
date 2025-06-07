@@ -1,17 +1,28 @@
 import json
+import logging
 import xml.etree.ElementTree as ET
-from pathlib import Path
+from typing import cast
 
-from src.config import PLUGIN_TEST_DATA, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, LOCAL
-from src.model.data_listing import ArtifactoryDataListing, FSDataListing
+from src.config import PLUGIN_TEST_DATA, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, PLUGIN_PROD_DATA, IS_TEST_MODE, \
+    PLUGINS_DIR
+from src.model.data_listing import DataListing
 from src.schemas import CatalogSchema, PluginSchema, PluginVersionSchema, PluginVersionSpecSchema
 
-if __name__ == '__main__':
+LOG = logging.getLogger(__name__)
 
-    dl = ArtifactoryDataListing("", "")
+
+def gen_json_cache(dl: DataListing, only_available_plugins: bool = True):
+    """
+    dl = ArtifactoryDataListing("https://...", "jetbrains/plugin-server")
     dl = FSDataListing(LOCAL)
 
+    gen_json_cache(dl)
+    """
+    LOG.info("build catalog")
+
     result: CatalogSchema = CatalogSchema()
+
+    available_plugins = [int(p.split(".", maxsplit=1)[0]) for p in dl.list(PLUGINS_DIR)]
 
     for plugin in dl.list(PLUGIN_SPECS_DIR):
         plugin_id_int = plugin.split(".", maxsplit=1)[0]
@@ -25,7 +36,11 @@ if __name__ == '__main__':
 
         root = ET.fromstring(plugin_spec)
 
-        versions = root.find("category").findall("idea-plugin")
+        if not (category := root.find("category")):
+            LOG.error("Plugin %s has no category", plugin)
+            continue
+
+        versions = category.findall("idea-plugin")
 
         result.plugins.append(PluginSchema(
             name=versions[0].find("name").text,
@@ -33,14 +48,22 @@ if __name__ == '__main__':
                 PluginVersionSchema(
                     plugin_id=version.find("id").text,
                     plugin_version_id=versions_to_plugin_version_id[version.find("version").text],
-                    version=version.find("version").text,
+                    version=version.find("version").text or "",
                     specs=PluginVersionSpecSchema(
-                        **{k: v for k, v in version.find("idea-version").items() if v != "n/a"}
-                    )
+                        **{cast(str, k): v for k, v in version.find("idea-version").items() if v != "n/a"}
+                    ),
+                    description=version.find("description").text,
+                    change_notes=version.find("change-notes").text,
                 )
                 for version in versions
+                if not only_available_plugins or
+                   versions_to_plugin_version_id[version.find("version").text] in available_plugins
             ]
         ))
-        print(f"Plugin {plugin} found {len(result.plugins[-1].versions)} versions")
+        LOG.info("Plugin '%s' (%s) found %s versions but only %s had available zip",
+                 versions[0].find("name").text, plugin, len(versions), len(result.plugins[-1].versions))
 
-    PLUGIN_TEST_DATA.write_text(json.dumps(result.model_dump(by_alias=True), indent=4))
+    if IS_TEST_MODE:
+        PLUGIN_TEST_DATA.write_text(json.dumps(result.model_dump(mode="json", by_alias=True), indent=4))
+    else:
+        PLUGIN_PROD_DATA.write_text(json.dumps(result.model_dump(mode="json", by_alias=True), indent=4))

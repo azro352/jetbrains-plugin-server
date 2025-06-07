@@ -23,7 +23,7 @@ if __name__ == '__main__':
     retries = Retry(total=5, backoff_factor=0.1)
     s.mount('https://', HTTPAdapter(max_retries=retries))
 
-    for plugin in PLUGINS[:2]:
+    for plugin in PLUGINS:
         print("PLUGIN", plugin)
         plugin = plugin.replace(f"{JETBRAINS_PLUGINS_HOST}/plugin/", "").strip("/")
         plugin_id_int = plugin.split("-", maxsplit=1)[0]
