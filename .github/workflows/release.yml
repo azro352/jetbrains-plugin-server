@@ -21,7 +21,7 @@ jobs:
       - name: Install pypa/build
         run: python3 -m pip install build --user
 
-      - name: Build a binary wheel and a source tarball
+      - name: Set git tag as package version
         run: |-
           RELEASE_VERSION="${GITHUB_REF#refs/*/}"
           echo "TAG=$RELEASE_VERSION"
