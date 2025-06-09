@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
 ]
 authors = [
@@ -36,5 +37,7 @@ version = { attr = "jetbrains_plugin_server.__version__" }
 offline = ["fastapi_offline"]
 
 [project.urls]
+Homepage = "https://github.com/azro352/jetbrains-plugin-server"
+Documentation = "https://github.com/azro352/jetbrains-plugin-server/blob/master/README.md"
 Repository = "https://github.com/azro352/jetbrains-plugin-server.git"
 "Bug Tracker" = "https://github.com/azro352/jetbrains-plugin-server/issues"
