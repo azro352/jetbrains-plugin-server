@@ -32,7 +32,7 @@ class TestPlugin(TestCase):
     def assertPluginExists(self, plugins, name, version):
         for pname, pvs in plugins:
             if pname == name:
-                self.assertEquals(pvs.version, version, f"Invalid version for plugin {name}")
+                self.assertEqual(pvs.version, version, f"Invalid version for plugin {name}")
                 break
         else:
             self.fail(f"Plugin {name} not found")
