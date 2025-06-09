@@ -11,8 +11,10 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE.md"]
 classifiers = [
-    "Intended Audience :: Developers",
     "Development Status :: 4 - Beta",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
