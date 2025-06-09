@@ -1,7 +1,7 @@
 from pydantic_extra_types.semantic_version import SemanticVersion
 
-from src.plugin_catalog import get_plugin_catalog
-from src.schemas import PluginVersionSchema, LowPaddingSemanticVersion
+from jetbrains_plugin_server.plugin_catalog import get_plugin_catalog
+from jetbrains_plugin_server.schemas import PluginVersionSchema, LowPaddingSemanticVersion
 
 
 def get_plugins(build: str) -> list[tuple[str, PluginVersionSchema]]:

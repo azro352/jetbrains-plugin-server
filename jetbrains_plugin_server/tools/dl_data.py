@@ -1,7 +1,8 @@
 from requests import get, Session
 from requests.adapters import HTTPAdapter, Retry
 
-from src.config import PLUGINS_DIR, PLUGIN_VERSIONS_DIR, PLUGIN_SPECS_DIR, LOCAL, JETBRAINS_PLUGINS_HOST
+from jetbrains_plugin_server.config import PLUGINS_DIR, PLUGIN_VERSIONS_DIR, PLUGIN_SPECS_DIR, LOCAL, \
+    JETBRAINS_PLUGINS_HOST
 
 PLUGINS: list[str] = [
     "https://plugins.jetbrains.com/plugin/631-python",

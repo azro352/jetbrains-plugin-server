@@ -2,8 +2,8 @@ import json
 import logging
 from functools import lru_cache
 
-from src.config import PLUGIN_TEST_DATA, IS_TEST_MODE, PLUGIN_PROD_DATA
-from src.schemas import CatalogSchema
+from jetbrains_plugin_server.config import PLUGIN_TEST_DATA, IS_TEST_MODE, PLUGIN_PROD_DATA
+from jetbrains_plugin_server.schemas import CatalogSchema
 
 LOG = logging.getLogger(__name__)
 

@@ -3,7 +3,7 @@ from unittest import TestCase
 
 os.environ["TEST_MODE"] = "true"
 
-from src.plugin_model import get_plugins
+from jetbrains_plugin_server.plugin_model import get_plugins
 
 """
 for c in content:

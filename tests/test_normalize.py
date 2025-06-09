@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from parameterized import parameterized
 
-from src.schemas import normalize_version
+from jetbrains_plugin_server.schemas import normalize_version
 
 
 class TestNormalize(TestCase):
@@ -16,8 +16,8 @@ class TestNormalize(TestCase):
         self.assertEquals(normalize_version(version, "start"), expected)
 
     @parameterized.expand([
-        ["1", "1.9999.9999"],
-        ["1.123", "1.123.9999"],
+        ["1", "1.999999.999999"],
+        ["1.123", "1.123.999999"],
         ["1.123.456", "1.123.456"],
     ])
     def test_normalize_end(self, version, expected):

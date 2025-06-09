@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 from io import BytesIO
 
-from src.config import DL_URL_BASE
-from src.schemas import PluginVersionSchema
+from jetbrains_plugin_server.config import DL_URL_BASE
+from jetbrains_plugin_server.schemas import PluginVersionSchema
 
 
 def to_xml(plugins: list[tuple[str, PluginVersionSchema]]):

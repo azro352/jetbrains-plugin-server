@@ -4,7 +4,7 @@ from typing import Annotated
 
 import markdown
 
-from src.config import FAST_API_OFFLINE
+from jetbrains_plugin_server.config import FAST_API_OFFLINE
 
 if FAST_API_OFFLINE:
     from fastapi_offline import FastAPIOffline as FastAPI
@@ -13,9 +13,9 @@ else:
 
 from fastapi.responses import HTMLResponse, Response
 
-from src.plugin_catalog import get_plugin_catalog
-from src.plugin_model import get_plugins
-from src.to_xml import to_xml
+from jetbrains_plugin_server.plugin_catalog import get_plugin_catalog
+from jetbrains_plugin_server.plugin_model import get_plugins
+from jetbrains_plugin_server.to_xml import to_xml
 
 LOG = logging.getLogger(__name__)
 
@@ -24,7 +24,8 @@ def create_app():
     app = FastAPI()
 
     @app.get("/")
-    def get_plugins_route(build: Annotated[str, "IDE build number to filter the available plugins and return only the compatible ones"] = ""):
+    def get_plugins_route(build: Annotated[
+        str, "IDE build number to filter the available plugins and return only the compatible ones"] = ""):
         if not build:
             md = Path(__file__).parent.parent.joinpath("README.md").read_text()
             return HTMLResponse(content=markdown.markdown(md))
