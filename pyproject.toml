@@ -23,7 +23,7 @@ authors = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 include = ["jetbrains_plugin_server*"]
 
 [tool.setuptools.dynamic]
