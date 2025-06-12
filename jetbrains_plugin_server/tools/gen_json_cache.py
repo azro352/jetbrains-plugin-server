@@ -3,12 +3,10 @@ import logging
 import xml.etree.ElementTree as ET
 from typing import cast
 
-from jetbrains_plugin_server.config import PLUGIN_TEST_DATA, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, \
-    PLUGIN_PROD_DATA, IS_TEST_MODE, \
-    PLUGINS_DIR
+from jetbrains_plugin_server.config import (IS_TEST_MODE, PLUGIN_PROD_DATA, PLUGIN_SPECS_DIR, PLUGIN_TEST_DATA, PLUGIN_VERSIONS_DIR,
+                                            PLUGINS_DIR)
 from jetbrains_plugin_server.model.data_listing import DataListing
-from jetbrains_plugin_server.schemas import CatalogSchema, PluginSchema, PluginVersionSchema, \
-    PluginVersionSpecSchema
+from jetbrains_plugin_server.schemas import CatalogSchema, PluginSchema, PluginVersionSchema, PluginVersionSpecSchema
 
 LOG = logging.getLogger(__name__)
 

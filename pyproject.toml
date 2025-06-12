@@ -41,3 +41,6 @@ Homepage = "https://github.com/azro352/jetbrains-plugin-server"
 Documentation = "https://github.com/azro352/jetbrains-plugin-server/blob/master/README.md"
 Repository = "https://github.com/azro352/jetbrains-plugin-server.git"
 "Bug Tracker" = "https://github.com/azro352/jetbrains-plugin-server/issues"
+
+[tool.isort]
+line_length = 140

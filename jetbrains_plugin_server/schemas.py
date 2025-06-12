@@ -1,10 +1,8 @@
 import re
-from typing import Literal, Type, Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 from pydantic_extra_types.semantic_version import SemanticVersion
-from semver._types import String
-from semver.version import T
 
 
 class LowPaddingSemanticVersion:
