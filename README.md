@@ -22,4 +22,11 @@ Creates a jetbrains-compatible plugin server with a given list of plugins
   storage or an
   artifactory
 
+## Paths
+
+- `/` to get the readme OR the compliant xml content if url param `build` is provided
+- `/cache` to get the full JSON cache of the server
+- `/packages` to get a nicer view of the available packages
+- `/docs` the openapi spec of the app, provided by FastAPI
+
 [jb-custom-repo]: https://www.jetbrains.com/help/idea/managing-plugins.html#add_plugin_repos
