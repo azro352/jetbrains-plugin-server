@@ -18,6 +18,10 @@ jobs:
         with:
           python-version: "3.10"
 
+      - uses: isort/isort-action@master
+        with:
+          requirementsFiles: "requirements.txt requirements-test.txt"
+
       - name: Install pypa/build
         run: python3 -m pip install build --user
 

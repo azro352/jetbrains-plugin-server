@@ -1,12 +1,9 @@
 import logging
 import re
-from importlib.metadata import metadata, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, metadata
 from typing import Annotated
 
 import markdown
-
-from jetbrains_plugin_server.config import FAST_API_OFFLINE
-from jetbrains_plugin_server.schemas import PluginSchema
 
 if FAST_API_OFFLINE:
     from fastapi_offline import FastAPIOffline as FastAPI
@@ -15,8 +12,10 @@ else:
 
 from fastapi.responses import HTMLResponse, Response
 
+from jetbrains_plugin_server.model.errors import add_error_handler
 from jetbrains_plugin_server.plugin_catalog import get_plugin_catalog
 from jetbrains_plugin_server.plugin_model import get_plugins
+from jetbrains_plugin_server.schemas import PluginSchema
 from jetbrains_plugin_server.to_xml import to_xml
 
 LOG = logging.getLogger(__name__)
@@ -24,6 +23,8 @@ LOG = logging.getLogger(__name__)
 
 def create_app():
     app = FastAPI()
+
+    add_error_handler(app)
 
     @app.get("/")
     def get_plugins_route(build: Annotated[
