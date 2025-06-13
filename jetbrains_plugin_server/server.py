@@ -5,6 +5,8 @@ from typing import Annotated
 
 import markdown
 
+from jetbrains_plugin_server.config import FAST_API_OFFLINE
+
 if FAST_API_OFFLINE:
     from fastapi_offline import FastAPIOffline as FastAPI
 else:
