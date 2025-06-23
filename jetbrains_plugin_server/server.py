@@ -34,9 +34,11 @@ def create_app():
     def get_plugins_route(build: Annotated[
         str, "IDE build number to filter the available plugins and return only the compatible ones"] = ""):
         if not build:
-            md = "# Jetbrains plugin server\n\n"
+            md = "# Jetbrains plugin server"
             try:
-                md += metadata("jetbrains-plugin-server")["description"]
+                mdt = metadata("jetbrains-plugin-server")
+                md += " v" + mdt["version"] + "\n\n"
+                md += mdt["description"]
                 md = re.sub(r"- `(/[^`]*)`", r"- [`\1`](\1)", md)
             except PackageNotFoundError:
                 pass
