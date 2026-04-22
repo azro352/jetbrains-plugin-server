@@ -4,8 +4,7 @@ from pathlib import Path
 from requests import Session, get
 from requests.adapters import HTTPAdapter, Retry
 
-from jetbrains_plugin_server.config import (JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR,
-                                            PLUGIN_VERSIONS_DIR, PLUGINS_DIR)
+from jetbrains_plugin_server.config import JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, PLUGINS_DIR
 
 
 def dl_data(plugins: list[str]):
