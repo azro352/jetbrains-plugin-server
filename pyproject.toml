@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 77.0.3"]
+requires = ["setuptools >= 82"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -24,6 +24,9 @@ classifiers = [
 authors = [
     { name = "azro352", email = "35503478+azro352@users.noreply.github.com" },
 ]
+
+[project.scripts]
+jb_plugin_download = "jetbrains_plugin_server.tools.dl_data:main_cli"
 
 [tool.setuptools.packages.find]
 where = ["."]

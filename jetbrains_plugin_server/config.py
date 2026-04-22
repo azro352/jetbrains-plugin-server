@@ -5,7 +5,7 @@ DL_URL_BASE = os.getenv("DL_URL_BASE", "https://fake.url/{plugin_version_id}")
 
 JETBRAINS_PLUGINS_HOST = "https://plugins.jetbrains.com"
 
-LOCAL = Path(os.getenv(
+LOCAL_DIR = Path(os.getenv(
     "LOCAL_DIR",
     Path(__file__).parent.parent.joinpath("local").as_posix()
 ))
