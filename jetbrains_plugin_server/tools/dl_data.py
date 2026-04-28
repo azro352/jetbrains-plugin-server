@@ -4,7 +4,8 @@ from pathlib import Path
 from requests import Session, get
 from requests.adapters import HTTPAdapter, Retry
 
-from jetbrains_plugin_server.config import JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, PLUGINS_DIR
+from jetbrains_plugin_server.config import JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, \
+    PLUGINS_DIR
 
 
 def dl_data(plugins: list[str]):
@@ -18,9 +19,14 @@ def dl_data(plugins: list[str]):
         raise FileNotFoundError(f"The directory {LOCAL_DIR.as_posix()} is missing, "
                                 f"please create it or specify another one using the env var 'LOCAL_DIR'")
 
+    missing_dirs = []
     for d in [PLUGIN_VERSIONS_DIR, PLUGINS_DIR, PLUGIN_SPECS_DIR]:
         if not LOCAL_DIR.joinpath(d).exists():
-            raise FileNotFoundError(f"The directory {LOCAL_DIR.joinpath(d).as_posix()} is missing, please create it")
+            missing_dirs.append(d)
+
+    if missing_dirs:
+        raise FileNotFoundError(f"The directory(ies) {','.join([d.as_posix() for d in missing_dirs])} "
+                                f"is(are) missing, please create it(the)")
 
     s = Session()
     retries = Retry(total=5, backoff_factor=0.1)
@@ -28,7 +34,7 @@ def dl_data(plugins: list[str]):
 
     for plugin in plugins:
         print("PLUGIN", plugin)
-        plugin = plugin.replace(f"{JETBRAINS_PLUGINS_HOST}/plugin/", "").strip("/")
+        plugin = plugin.replace(f"{JETBRAINS_PLUGINS_HOST}/plugin/", "").strip("/").split("#", maxsplit=1)[0]
         plugin_id_int = plugin.split("-", maxsplit=1)[0]
 
         versions_rep = get(f"{JETBRAINS_PLUGINS_HOST}/plugins/list?pluginId={plugin}")
