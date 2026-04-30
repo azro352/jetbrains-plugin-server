@@ -21,7 +21,7 @@ def normalize_version(value: str, mode: Literal["start", "end"]):
     if match := re.match(r"^[A-Z]+-(.+)$", value):
         value = match.group(1)
     replacer = "0" if mode == "start" else "999999"
-    result = value.replace(".*", f".{replacer}")
+    result = value.replace(".000", ".0").replace(".*", f".{replacer}")
     while result.count(".") < 2:
         result += f".{replacer}"
     return result
