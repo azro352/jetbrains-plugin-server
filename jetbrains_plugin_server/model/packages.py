@@ -14,7 +14,10 @@ router = APIRouter(
 def get_packages_route():
     catalog = get_plugin_catalog()
     md = "# Packages\n"
-    md += "\n".join(f"- [{p.name}](/packages/{p.versions[0].plugin_id})" for p in catalog.plugins)
+    md += "\n".join(
+        f"- [{p.name}](/packages/{p.versions[0].plugin_id})" if p.versions else f"{p.name} -- no versions"
+        for p in catalog.plugins
+    )
     md += "\n\n [Previous page](/)"
     return HTMLResponse(content=markdown.markdown(md))
 
@@ -22,7 +25,7 @@ def get_packages_route():
 @router.get("/{plugin_id}")
 def get_package_route(plugin_id: str):
     catalog = get_plugin_catalog()
-    plugin: PluginSchema = next(p for p in catalog.plugins if p.versions[0].plugin_id == plugin_id)
+    plugin: PluginSchema = next(p for p in catalog.plugins if p.versions and p.versions[0].plugin_id == plugin_id)
     md = f"# Package {plugin.name}\n"
     md += "\n".join(
         f"- [{v.version}](/packages/{plugin_id}/{v.version}) "
