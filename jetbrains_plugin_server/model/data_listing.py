@@ -1,3 +1,4 @@
+import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
@@ -47,4 +48,20 @@ class ArtifactoryDataListing(DataListing):
 
     def get(self, directory, file) -> Any:
         url = f"{self.base_url}/artifactory/{self.repo_name}/{directory}/{file}"
+        return requests.get(url).text
+
+
+class ApacheServerDataListing(DataListing):
+
+    def __init__(self, base_url: str, repo_name: str):
+        self.base_url = base_url.strip("/")
+        self.repo_name = repo_name.strip("/")
+
+    def list(self, directory) -> list[str]:
+        url = f"{self.base_url}/{self.repo_name}/{directory}"
+        files_rep = requests.get(url)
+        return re.findall(r'<a href="\d+.+">(\d+.+)</a>', files_rep.text)
+
+    def get(self, directory, file) -> Any:
+        url = f"{self.base_url}/{self.repo_name}/{directory}/{file}"
         return requests.get(url).text
