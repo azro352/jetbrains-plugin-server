@@ -24,6 +24,7 @@ jobs:
       - uses: isort/isort-action@master
         with:
           requirementsFiles: "requirements.txt requirements-test.txt"
+          configuration: "--check-only --diff --line-length=120"
 
       - uses: pavelzw/pytest-action@v2
         with:
