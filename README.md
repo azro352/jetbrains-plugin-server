@@ -8,19 +8,36 @@ Creates a jetbrains-compatible plugin server with a given list of plugins
 
 ## How-to use
 
-- use the script `dl_data.py` to fetch plugins metadata and data from jetbrains server
-- (optional) upload these data to an artifactory
-- use the script `gen_json_cache.py` to generate a JSON file that contains all the metadata together
-- start the server
-- register your server [in your IDE][jb-custom-repo]
+### Download the data
+
+Use the script `dl_data.py` to fetch plugins metadata and data from jetbrains server, and save them where you want
+
+### Create the server
+
+```python
+from fastapi import FastAPI
+
+from jetbrains_plugin_server import create_plugin_server
+from jetbrains_plugin_server.model.data_listing import FSDataListing
+
+app: FastAPI = create_plugin_server(
+    FSDataListing("/data/myfolder"),
+    "https://myendpoint/plugins/{plugin_version_id}"
+)
+```
+
+Then deploy it like you want
+
+### Use the server
+
+Register the server [in your IDE][jb-custom-repo]
 
 ## Tools
 
 - `jetbrains_plugin_server/tools/dl_data.py` to fetch plugins specifications, versions and content from jetbrains to a
   local filesystem
 - `jetbrains_plugin_server/tools/gen_json_cache.py` to build a JSON cache to answer faster, using either a filesystem
-  storage or an
-  artifactory
+  storage, an artifactory or an apache server
 
 ## Paths
 

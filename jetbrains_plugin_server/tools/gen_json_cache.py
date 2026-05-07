@@ -18,7 +18,7 @@ def gen_json_cache(dl: DataListing, only_available_plugins: bool = True):
 
     gen_json_cache(dl)
     """
-    LOG.info("build catalog")
+    LOG.info("Build catalog")
 
     result: CatalogSchema = CatalogSchema()
 
@@ -67,3 +67,5 @@ def gen_json_cache(dl: DataListing, only_available_plugins: bool = True):
         PLUGIN_TEST_DATA.write_text(json.dumps(result.model_dump(mode="json", by_alias=True), indent=4))
     else:
         PLUGIN_PROD_DATA.write_text(json.dumps(result.model_dump(mode="json", by_alias=True), indent=4))
+
+    LOG.info("Built catalog")

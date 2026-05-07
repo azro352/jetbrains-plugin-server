@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-DL_URL_BASE = os.getenv("DL_URL_BASE", "https://fake.url/{plugin_version_id}")
-
 JETBRAINS_PLUGINS_HOST = "https://plugins.jetbrains.com"
 
 LOCAL_DIR = Path(os.getenv(
