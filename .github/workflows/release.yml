@@ -21,6 +21,7 @@ jobs:
       - uses: isort/isort-action@master
         with:
           requirementsFiles: "requirements.txt requirements-test.txt"
+          configuration: "--check-only --diff --line-length=120"
 
       - name: Install pypa/build
         run: python3 -m pip install build --user
