@@ -16,6 +16,9 @@ PLUGIN_SPECS_DIR = "plugin_specs"
 PLUGIN_VERSIONS_DIR = "plugin_versions"
 PLUGINS_DIR = "plugins"
 
-IS_TEST_MODE = os.getenv("TEST_MODE") == "true"
+
+def is_test_mode() -> bool:
+    return os.getenv("TEST_MODE") == "true"
+
 
 FAST_API_OFFLINE = os.getenv("FAST_API_OFFLINE") == "true"
