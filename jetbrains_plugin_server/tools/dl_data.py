@@ -4,10 +4,11 @@ from pathlib import Path
 from requests import Session, get
 from requests.adapters import HTTPAdapter, Retry
 
-from jetbrains_plugin_server.config import JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, PLUGINS_DIR
+from jetbrains_plugin_server.config import JETBRAINS_PLUGINS_HOST, LOCAL_DIR, PLUGIN_SPECS_DIR, PLUGIN_VERSIONS_DIR, \
+    PLUGINS_DIR
 
 
-def dl_data(plugins: list[str]):
+def dl_data(plugins: list[str], nb_versions: int):
     """
     The argument values can be either:
      - plugins IDs: "631" (for python)
@@ -46,7 +47,7 @@ def dl_data(plugins: list[str]):
             versions_id_rep.content
         )
 
-        for row in versions_id_rep.json()[:-50:-1]:
+        for row in versions_id_rep.json()[:-nb_versions:-1]:
             print(f"   VERSION {row['version']:20s}", end="")
             sys.stdout.flush()
             plugin_version_id = row["id"]
@@ -65,10 +66,18 @@ def dl_data(plugins: list[str]):
 
 
 def main_cli():
+    print(f"Usage: {sys.argv[0]} filepath <nb_versions_to_dl>")
+
     in_file = Path(sys.argv[1])
     if not in_file.exists():
         raise FileNotFoundError(
             "The given input should be a path to an existing file containing one plugin ID per line")
+
+    nb_versions = 10
+    if len(sys.argv) == 3:
+        nb_versions = int(sys.argv[2])
+
     dl_data(
-        in_file.read_text().splitlines()
+        in_file.read_text().splitlines(),
+        nb_versions
     )
